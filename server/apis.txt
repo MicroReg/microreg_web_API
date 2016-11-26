@@ -1,0 +1,15 @@
+LIST OF REST API USED AT CLIENT END:
+
+1. http://192.168.2.240:10001/,[GET]
+2. http://192.168.2.240:10001/get_all_service_details,[GET]
+3. http://192.168.2.240:10001/get_reg_count,[GET]
+4. http://192.168.2.240:10001/get_service_details,[GET]
+5. http://192.168.2.240:10001/unregister,[GET]
+6. http://192..168.2.240:10001/authentication,[POST]
+
+r=post("http://192.168.2.240:10001/authentication",json={"username":"mirage","token":"jfojfojfo"})
+r=get("http://192.168.2.240:10001/",json={"host":"192.168.2.215","port":8000})
+r=get("http://192.168.2.240:10001/get_all_service_details")
+r=get("http://192.168.2.240:10001/unregister",json={"name":"ser1"})
+r=get("http://192.168.2.240:10001/get_service_details",json={"name":"ser1"})
+r=get("http://192.168.2.240:10001/get_reg_count")
