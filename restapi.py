@@ -1,7 +1,7 @@
 try:
     import  MicroRegClient
 except:
-    from micro_reg import MicroRegClient
+    from micro_reg_mod import MicroRegClient
 
 from flask import Flask, request, url_for, render_template, flash, redirect
 import json
