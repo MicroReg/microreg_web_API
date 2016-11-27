@@ -2,7 +2,7 @@ try:
     import  MicroRegClient
 except:
     from micro_reg_mod import MicroRegClient
-
+import requests
 from flask import Flask, request, url_for, render_template, flash, redirect
 import json
 from cred import username,token
@@ -153,15 +153,23 @@ def front():
 
 @app.route("/landing_page",methods=["POST"])
 def land():
-    print request.method
+    # print request.method
     data = request.form
-    print data
+    # print data
     user = data["username"]
     pswd = data["password"]
+    # print user,pswd
     if user == username and pswd == token :
+        global auth_dict
+        auth_dict["username"] = user
+        auth_dict["token"] = token
+        auth_dict["timestamp"] = datetime.now()
+        # return json.dumps({"status":1}) #success
         return render_template("index.html")
     else:
-        flash("Incorrect Username or Password")
+        # return json.dumps({"status":0}) #failure
+        return flash("Unsuccessful attempt")
+
 
 if __name__ == '__main__':
     t1=Thread(target=timeout)
