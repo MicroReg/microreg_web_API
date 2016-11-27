@@ -3,7 +3,7 @@ try:
 except:
     from micro_reg import MicroRegClient
 
-from flask import Flask, request
+from flask import Flask, request, url_for, render_template, flash, redirect
 import json
 from cred import username,token
 from datetime import datetime
@@ -68,18 +68,22 @@ def timeout():
 #!---------------Routing APIs-----------------------!
 @app.route("/authentication",methods=["POST"])
 def auth():
-    data=request.get_json()
-    user=data["username"]
-    tok=data["token"]
+    # print request.args
+    # user=request.args["username"]
+    # tok=request.args["token"]
+    data = request.get_json()
+    user = data["username"]
+    tok = data["token"]
     if (user == username) or (tok == token):
         global auth_dict
         auth_dict["username"] = user
         auth_dict["token"] = token
         auth_dict["timestamp"] = datetime.now()
-        return json.dumps({"status":"1"}) #success
+        # return json.dumps({"status":1}) #success
+        return json.dumps({"status":[1]})
     else:
-        return json.dumps({"status":"0"}) #failure
-
+        # return json.dumps({"status":0}) #failure
+        return json.dumps({"status":[0]})
 
 @app.route("/",methods=["GET"])
 @login_required
@@ -142,6 +146,22 @@ def unregister():
         return json.dumps({"status":"1","data":str( microreg["inst"].unregister(name))})
     except :
         return json.dumps(err)
+
+@app.route("/login_page",methods=["GET"])
+def front():
+    return render_template("login.html")
+
+@app.route("/landing_page",methods=["POST"])
+def land():
+    print request.method
+    data = request.form
+    print data
+    user = data["username"]
+    pswd = data["password"]
+    if user == username and pswd == token :
+        return render_template("index.html")
+    else:
+        flash("Incorrect Username or Password")
 
 if __name__ == '__main__':
     t1=Thread(target=timeout)
